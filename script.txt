@@ -1,0 +1,32 @@
+slc lb project slex-server
+cd slex-server
+
+npm install loopback-connector-mysql
+slc lb datasource db --connector sql
+
+node ../util/discover.js
+
+# edit models.json - fix model names & relations
+#  Employee.relations.employee -> Employee.relations.reportsTo
+#  Expenserecord -> ExpenseRecord
+#  ExpenseRecord.relations.employee -> rename to createdBy, fix foreignKey
+#  Employee.options
+    options: {
+      base: 'User',
+      relations: {
+        "accessTokens": {
+          "model": "AccessToken",
+          "type": "hasMany",
+          "foreignKey": "userId"
+        }
+      }
+    }
+
+# fix acl models
+slc lb datasource memory
+# edit datasources.json, add defaultForType "db"
+
+(FIXME - change db to use memory instead of mysql)
+
+TODO next
+--ionic
